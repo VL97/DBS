@@ -1,0 +1,148 @@
+Q1)Find the average of all the amounts of house loans.  (3marks)
+	e.g-hou1,hou2..
+
+Solution-  SELECT AVG(AMOUNT) FROM LOAN WHERE LN_NO='hou1' OR LN_NO='hou2' OR LN_NO='hou3' OR LN_NO='hou4' OR LN_NO='hou5' OR LN_NO='hou6';
++--------------+
+| AVG(AMOUNT)  |
++--------------+
+| 3833333.3333 |
++--------------+
+1 row in set (0.00 sec)
+
+OR 
+
+SELECT AVG(AMOUNT) FROM LOAN WHERE LN_NO like 'hou%';
++--------------+
+| AVG(AMOUNT)  |
++--------------+
+| 3833333.3333 |
++--------------+
+1 row in set (0.00 sec)
+
+
+Q2) Display the account numbers of all even zone branch accounts with balance greater than 5000.  (3 marks)
+	e.g-zone2,zone4..
+
+Solution- SELECT ACC_NO FROM ACCOUNT WHERE BALANCE>5000 AND (BR_NAME='zone2' OR BR_NAME = 'zone4' OR BR_NAME='zone6' OR BR_NAME='zone8');
++-------------+
+| ACC_NO      |
++-------------+
+| 20012023046 |
+| 20012023097 |
+| 20012023098 |
+| 20112023046 |
++-------------+
+4 rows in set (0.00 sec)
+
+Q3)Display the 5 lexicographically largest city names from the BRANCH table. (3 marks)
+
+Solution - select CITY from BRANCH ORDER by CITY DESC LIMIT 5;
++---------------+
+| CITY          |
++---------------+
+| Vizag         |
+| Vijayawada    |
+| Vijayanagaram |
+| Tirupathi     |
+| Srikakulam    |
++---------------+
+5 rows in set (0.00 sec)
+
+
+Q4) Find male customers who are not depositors. (3 marks)
+
+Solution-select NAME from CUSTOMER where GENDER='m' and C_ID not in(select CUST_ID from DEPOSITOR);
++------+
+| NAME |
++------+
+| ramu |
++------+
+1 row in set (0.00 sec)
+
+
+Q5) Find the names of cities in alphabetical order where more than 1 loan has been issued. (3 marks)
+
+Solution- SELECT CITY FROM BRANCH,LOAN WHERE LOAN.BR_NAME= BRANCH.BRN_NAME GROUP BY BR_NAME HAVING COUNT(*) >1 ORDER BY CITY;
++---------------+
+| CITY          |
++---------------+
+| Guntur        |
+| Tirupathi     |
+| Vijayanagaram |
+| Vijayawada    |
+| Vizag         |
++---------------+
+5 rows in set (0.00 sec)
+
+
+
+Q6)Find the name and amount of the customer(s) who have made maximum payment of their loans. (6 marks)
+
+Solution-  SELECT NAME,MAX(B) AS AMOUNT FROM (SELECT NAME,SUM(AMOUNT) AS B FROM CUSTOMER,BORROWER,PAYMENT WHERE CUSTOMER.C_ID = BORROWER.CUST_ID  AND PAYMENT.L_NO = BORROWER.LOAN_NO GROUP BY NAME) AS T;
++---------+---------+
+| NAME    | AMOUNT  |
++---------+---------+
+| haritha | 2088428 |
++---------+---------+
+1 row in set (0.00 sec)
+
+7)Display the names and account numbers of all the female customers who have taken exactly 3 loans. (6 marks)
+
+Solution-SELECT DISTINCT NAME,AC_NO FROM CUSTOMER C,DEPOSITOR D,(SELECT CUST_ID,COUNT(*) FROM BORROWER GROUP BY CUST_ID HAVING COUNT(*)=3) AS B WHERE C.C_ID = D.CUST_ID AND C.C_ID = B.CUST_ID AND C.GENDER='f';
++----------+-------------+
+| NAME     | AC_NO       |
++----------+-------------+
+| haritha  | 20012023094 |
+| sachitra | 20012033046 |
++----------+-------------+
+2 rows in set (0.00 sec)
+
+
+Q8) Display the name and balance of all the customers who have accessed their accounts in the month of May and who also have taken more than one loan. (9 marks)
+
+Solution - SELECT NAME,BALANCE from CUSTOMER C,ACCOUNT A,DEPOSITOR D,LOAN L,(SELECT CUST_ID FROM BORROWER GROUP BY CUST_ID HAVING COUNT(*)>1  ) AS T  WHERE C.C_ID = D.CUST_ID AND D.AC_NO=A.ACC_NO AND T.CUST_ID = C.C_ID AND D.ACCESS_DT LIKE "%-05-%"  GROUP BY T.CUST_ID;
++---------+---------+
+| NAME    | BALANCE |
++---------+---------+
+| haritha |    4000 |
+| himani  |    4000 |
++---------+---------+
+2 rows in set, 1 warning (0.01 sec)
+
+
+Q9)For each payment date, give amount and cumulative amount made till that date. (9 marks)
+The output should look like this : 
++------+------+------------+---------+
+| P_NO | L_NO | DATE       | AMOUNT  |
++------+------+------------+---------+
+| x    | x1   | 2011-01-09 | 100     |
+| y    | y1   | 2000-01-09 | 90	     |	
+| z    | z1   | 2011-01-01 | 3000    |
++--------------------------------------------+
+|DATE       | AMOUNT | CUM_AMOUNT |
++--------------------------------------------+
+|2000-01-09 | 90     | 90         |
+|2011-01-01 | 100    | 190        |
+|2011-01-09 | 3000   | 3190       |
++--------------------------------------------+
+
+Solution-select P1.DATE,P1.AMOUNT,sum(P2.AMOUNT) FROM PAYMENT AS P1,PAYMENT
+    -> AS P2 where P1.DATE>=P2.DATE group by P1.DATE,P1.AMOUNT ORDER BY P1.DATE;
++------------+---------+----------------+
+| DATE       | AMOUNT  | sum(P2.AMOUNT) |
++------------+---------+----------------+
+| 2000-01-09 | 1038714 |        1038714 |
+| 2011-01-01 |    3000 |        1041714 |
+| 2011-01-09 | 1038714 |        2080428 |
+| 2011-03-11 |    5000 |        2085428 |
+| 2011-10-08 |    5000 |        2090428 |
+| 2011-10-09 |    5000 |        2095428 |
+| 2011-10-11 |    5000 |        2100428 |
+| 2012-03-11 |    5000 |        2105428 |
+| 2012-04-11 |    8000 |        2113428 |
+| 2012-10-25 | 1038714 |        3152142 |
++------------+---------+----------------+
+10 rows in set (0.00 sec)
+
+
+

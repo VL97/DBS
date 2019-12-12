@@ -1,0 +1,118 @@
+mysql> show tables;
++---------------------+
+| Tables_in_timetable |
++---------------------+
+| attends             |
+| course              |
+| has                 |
+| hobby               |
+| lecsub_teaches      |
+| lecturer            |
+| student             |
+| studlec_teaches     |
+| subject             |
+| takes               |
++---------------------+
+10 rows in set (0.01 sec)
+
+mysql> desc attends;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| student_id | int(15)     | NO   | PRI | NULL    |       |
+| course_id  | varchar(20) | NO   | PRI | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc course;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| course_id   | varchar(20) | NO   | PRI | NULL    |       |
+| course_name | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc has;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| subject_id | varchar(20) | NO   | PRI | NULL    |       |
+| course_id  | varchar(20) | NO   | PRI | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc hobby;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| student_id    | int(15)     | NO   | PRI | NULL    |       |
+| student_hobby | varchar(20) | NO   | PRI | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc lecsub_teaches;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| subject_id  | varchar(20) | NO   | PRI | NULL    |       |
+| lecturer_id | varchar(20) | NO   | PRI | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc lecturer;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| lecturer_id   | varchar(20) | NO   | PRI | NULL    |       |
+| lecturer_name | varchar(20) | YES  |     | NULL    |       |
+| course_id     | varchar(20) | YES  | MUL | NULL    |       |
+| subject_id    | varchar(20) | YES  | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc student;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| student_id | int(15)     | NO   | PRI | NULL    |       |
+| name       | varchar(20) | NO   |     | NULL    |       |
+| dob        | date        | YES  |     | NULL    |       |
+| door       | int(11)     | YES  |     | NULL    |       |
+| street     | varchar(20) | YES  |     | NULL    |       |
+| city       | varchar(20) | YES  |     | NULL    |       |
+| state      | varchar(20) | YES  |     | NULL    |       |
+| pin        | int(11)     | YES  |     | NULL    |       |
+| course_id  | varchar(20) | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> desc studlec_teaches;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| student_id  | int(15)     | NO   | PRI | NULL    |       |
+| lecturer_id | varchar(20) | NO   | PRI | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc subject;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| subject_id   | varchar(20) | NO   | PRI | NULL    |       |
+| course_id    | varchar(20) | NO   | PRI | NULL    |       |
+| subject_name | varchar(20) | YES  |     | NULL    |       |
+| lecturer_id  | varchar(20) | YES  | MUL | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc takes;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| lecturer_id | varchar(20) | NO   | PRI | NULL    |       |
+| course_id   | varchar(20) | NO   | PRI | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
